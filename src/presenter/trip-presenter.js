@@ -7,22 +7,35 @@ import { render } from '../render.js';
 export default class TripPresenter {
   tripEventsListComponent = new TripEventsListView();
 
-  constructor({tripEventsListContainer, pointsModel }) {
+  constructor({tripEventsListContainer, pointsModel,destinationsModel, offersModel }) {
     this.tripEventsListContainer = tripEventsListContainer;
     this.pointsModel = pointsModel;
+    this.destinationsModel = destinationsModel;
+    this.offersModel = offersModel;
+
   }
 
   init() {
     this.tripPoints = [...this.pointsModel.getPoints()];
-    this.pointsOffers = [...this.pointsModel.getOffers()];
-    this.pointsDestinations = [...this.pointsModel.getDestinations()];
-    render(this.tripEventsListComponent, this.tripEventsListContainer);
-    render(new EditEventView({point: this.tripPoints[0], offer: this.pointsOffers,
-      destination:this.pointsDestinations}),this.tripEventsListComponent.getElement());
+    this.destinations = [...this.destinationsModel.getDestinations()];
 
-    for(let i = 0; i < this.tripPoints.length; i++){
-      render(new UserEventsView({point: this.tripPoints[i],offer: this.pointsOffers,
-        destination:this.pointsDestinations}),this.tripEventsListComponent.getElement());
+    render(this.tripEventsListComponent, this.tripEventsListContainer);
+
+    render(new EditEventView({
+      destination: this.destinationsModel.getById(this.tripPoints[0]),
+      tripPoint: this.tripPoints[0],
+      offers: this.offersModel.getByType(this.tripPoints[0]),
+    }), this.tripEventsListComponent.getElement());
+
+    for (let i = 1; i < this.tripPoints.length; i++) {
+      const destination = this.destinationsModel.getById(this.tripPoints[i]);
+      const offers = this.offersModel.getById(this.tripPoints[i]);
+      render(new UserEventsView({
+        point: this.tripPoints[i],
+        destination: destination,
+        offers: offers
+      }), this.routePointListComponent.getElement());
     }
+
   }
 }

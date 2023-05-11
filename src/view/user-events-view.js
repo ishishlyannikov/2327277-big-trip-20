@@ -1,39 +1,56 @@
-import { createElement } from '../render';
+import { createElement } from '../render.js';
+import { humanizeDate, getTimeDiff } from '../utils.js';
 
-function createUserEventsTemplate() {
+const DATE_FORMAT = 'YYYY-MM-DD';
+const EVENT_DATE = 'MMM DD';
+const TIME_FORMAT = 'HH:mm';
+
+
+function createUserEventsTemplate(tripPoint, destination, offers) {
+
+  const {dateFrom, dateTo, type, basePrice, isFavorite} = tripPoint;
+
+  const dateFormat = humanizeDate(dateFrom, DATE_FORMAT);
+  const eventDate = humanizeDate(dateFrom, EVENT_DATE);
+  const beginTrip = humanizeDate(dateFrom, TIME_FORMAT);
+  const endTrip = humanizeDate(dateTo, TIME_FORMAT);
+  const durationTime = getTimeDiff(dateFrom, dateTo);
+
+  function createOfferTemplate(offersList) {
+    return offersList.map((offer) =>
+      `<li class="event__offer">
+           <span class="event__offer-title">${offer.title}</span>
+           &plus;&euro;&nbsp;
+           <span class="event__offer-price">${offer.price}</span>
+         </li>`).join('');
+  }
+
+  const getFavoriteButton = () => isFavorite ? 'active' : '';
+
   return (
     `<li class="trip-events__item">
     <div class="event">
-      <time class="event__date" datetime="2019-03-18">MAR 18</time>
+    <time class="event__date" datetime="${dateFormat}">${eventDate}</time>
       <div class="event__type">
-        <img class="event__type-icon" width="42" height="42" src="img/icons/flight.png" alt="Event type icon">
+      <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
       </div>
-      <h3 class="event__title">Flight Chamonix</h3>
+      <h3 class="event__title">${type} ${destination.name}</h3>
       <div class="event__schedule">
         <p class="event__time">
-          <time class="event__start-time" datetime="2019-03-18T12:25">12:25</time>
+        <time class="event__start-time" datetime="${dateFormat}T${beginTrip}">${beginTrip}</time>
           &mdash;
-          <time class="event__end-time" datetime="2019-03-18T13:35">13:35</time>
+          <time class="event__end-time" datetime="${dateFormat}T${endTrip}">${endTrip}</time>
         </p>
-        <p class="event__duration">01H 10M</p>
+        <p class="event__duration">${durationTime}</p>
       </div>
       <p class="event__price">
-        &euro;&nbsp;<span class="event__price-value">160</span>
+      &nbsp;<span class="event__price-value">${basePrice}</span>
       </p>
       <h4 class="visually-hidden">Offers:</h4>
       <ul class="event__selected-offers">
-        <li class="event__offer">
-          <span class="event__offer-title">Add luggage</span>
-          &plus;&euro;&nbsp;
-          <span class="event__offer-price">50</span>
-        </li>
-        <li class="event__offer">
-          <span class="event__offer-title">Switch to comfort</span>
-          &plus;&euro;&nbsp;
-          <span class="event__offer-price">80</span>
-        </li>
+      ${createOfferTemplate(offers)}
       </ul>
-      <button class="event__favorite-btn" type="button">
+      <button class="event__favorite-btn event__favorite-btn--${getFavoriteButton()}" type="button">
         <span class="visually-hidden">Add to favorite</span>
         <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
           <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>
@@ -49,8 +66,14 @@ function createUserEventsTemplate() {
 }
 
 export default class UserEventsView {
+  constructor({tripPoint, destination, offers}){
+    this.tripPoint = tripPoint;
+    this.destination = destination;
+    this.offers = offers;
+  }
+
   getTemplate() {
-    return createUserEventsTemplate();
+    return createUserEventsTemplate(this.tripPoint, this.destination, this.offers);
   }
 
   getElement() {

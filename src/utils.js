@@ -16,21 +16,21 @@ export function humanizeDate(date, dateFormat) {
 
 export function getTimeDiff(timeFrom, timeTo) {
   const timeDiff = dayjs(timeTo).diff(timeFrom);
-  let routePointDuration = 0;
+  let pointDuration = 0;
 
   switch (true) {
     case (timeDiff >= MSEC_IN_DAY):
-      routePointDuration = dayjs.duration(timeDiff).format('DD[D] HH[H] mm[M]');
+      pointDuration = dayjs.duration(timeDiff).format('DD[D] HH[H] mm[M]');
       break;
     case (timeDiff >= MSEC_IN_HOUR):
-      routePointDuration = dayjs.duration(timeDiff).format('HH[H] mm[M]');
+      pointDuration = dayjs.duration(timeDiff).format('HH[H] mm[M]');
       break;
     case (timeDiff < MSEC_IN_HOUR):
-      routePointDuration = dayjs.duration(timeDiff).format('mm[M]');
+      pointDuration = dayjs.duration(timeDiff).format('mm[M]');
       break;
   }
 
-  return routePointDuration;
+  return pointDuration;
 }
 
 export function getRandomArrayElement(items) {

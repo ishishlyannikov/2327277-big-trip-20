@@ -1,169 +1,137 @@
-import { DESTINATIONS, DESCRIPTIONS, TRIP_OFFERS } from '../const.js';
+import { DESCRIPTIONS, DESTINATIONS, TRIP_OFFERS } from '../const.js';
 import { getRandomArrayElement } from '../utils.js';
 
-const point = [ {
-  'basePrice': 1100,
-  'dateFrom': '2019-07-10T22:55:56.845Z',
-  'dateTo': '2019-07-11T11:22:13.375Z',
-  'destination': '1',
-  'isFavorite': false,
-  'offers': ['2'],
-  'type': 'Taxi',
-},
-{
-  'basePrice': 1300,
-  'dateFrom': '2019-07-10T22:55:56.845Z',
-  'dateTo': '2019-07-11T11:22:13.375Z',
-  'destination': '2',
-  'isFavorite': true,
-  'offers': ['1'],
-  'type': 'Flight',
-},
-{
-  'basePrice': 1200,
-  'dateFrom': '2019-07-10T22:55:56.845Z',
-  'dateTo': '2019-07-11T11:22:13.375Z',
-  'destination': '3',
-  'isFavorite': true,
-  'offers': ['1'],
-  'type': 'Train',
-},
-{
-  'basePrice': 1800,
-  'dateFrom': '2019-07-10T22:55:56.845Z',
-  'dateTo': '2019-07-11T11:22:13.375Z',
-  'destination': '4',
-  'isFavorite': true,
-  'offers': ['1'],
-  'type': 'Ship',
-},
+export const mockDestinations = [
+  {
+    id: '1',
+    description: getRandomArrayElement(DESCRIPTIONS),
+    name: getRandomArrayElement(DESTINATIONS),
+    pictures: [
+      {
+        src: 'https://loremflickr.com/248/152?random=35',
+        description: getRandomArrayElement(DESCRIPTIONS)
+      },
+      {
+        src: 'https://loremflickr.com/248/152?random=45',
+        description: getRandomArrayElement(DESCRIPTIONS)
+      }
+    ]
+  },
+  {
+    id: '2',
+    description: getRandomArrayElement(DESCRIPTIONS),
+    name: getRandomArrayElement(DESTINATIONS),
+    pictures: [
+      {
+        src: 'https://loremflickr.com/248/152?random=45',
+        description: getRandomArrayElement(DESCRIPTIONS)
+      },
+      {
+        src: 'https://loremflickr.com/248/152?random=12',
+        description: getRandomArrayElement(DESCRIPTIONS)
+      }
+    ]
+  },
+  {
+    id: '3',
+    description: getRandomArrayElement(DESCRIPTIONS),
+    name: getRandomArrayElement(DESTINATIONS),
+    pictures: [
+      {
+        src: 'https://loremflickr.com/248/152?random=11',
+        description: getRandomArrayElement(DESCRIPTIONS)
+      },
+      {
+        src: 'https://loremflickr.com/248/152?random=1',
+        description: getRandomArrayElement(DESCRIPTIONS)
+      }
+    ]
+  },
 ];
 
-const extraOffers = [
+export const mockOffers = [
   {
-    type: 'Taxi',
+    type: 'taxi',
     offers: [
       {
-        id: '11',
+        id: '1',
         title: getRandomArrayElement(TRIP_OFFERS),
         price: 350
       },
       {
-        id: '12',
+        id: '2',
         title: getRandomArrayElement(TRIP_OFFERS),
         price: 45
       }
     ]
   },
   {
-    type: 'Flight',
+    type: 'flight',
     offers: [
       {
-        id: '13',
+        id: '1',
         title: getRandomArrayElement(TRIP_OFFERS),
         price: 400
       },
       {
-        id: '14',
+        id: '2',
         title: getRandomArrayElement(TRIP_OFFERS),
         price: 450
       },
       {
-        id: '15',
+        id: '3',
         title: getRandomArrayElement(TRIP_OFFERS),
         price: 30
       }
     ]
   },
   {
-    type: 'Check-in',
+    type: 'check-in',
     offers: [
       {
-        id: '16',
+        id: '1',
         title: getRandomArrayElement(TRIP_OFFERS),
         price: 100
       },
       {
-        id: '17',
+        id: '2',
         title: getRandomArrayElement(TRIP_OFFERS),
         price: 45
-      }
-    ]
-  },
-];
-
-const destinations = [
-  {
-    id: '21',
-    description:getRandomArrayElement(DESCRIPTIONS),
-    name: getRandomArrayElement(DESTINATIONS),
-    pictures: [
-      {
-        srс: 'https://loremflickr.com/248/152?random=2',
-        description: 'Event photo'
-      },
-      {
-        srс: 'https://loremflickr.com/248/152?random=3',
-        description: 'Event photo'
-      }
-    ]
-  },
-  {
-    id: '22',
-    description: getRandomArrayElement(DESCRIPTIONS),
-    name: getRandomArrayElement(DESTINATIONS),
-    pictures: [
-      {
-        srс: 'https://loremflickr.com/248/152?random=1',
-        description: 'Event photo'
-      },
-      {
-        srс: 'https://loremflickr.com/248/152?random=5',
-        description: 'Event photo'
-      }
-    ]
-  },
-  {
-    id: '23',
-    description: getRandomArrayElement(DESCRIPTIONS),
-    name: getRandomArrayElement(DESTINATIONS),
-    pictures: [
-      {
-        srс: 'https://loremflickr.com/248/152?random=1',
-        description: 'Event photo'
-      },
-      {
-        srс: 'https://loremflickr.com/248/152?random=5',
-        description: 'Event photo'
-      }
-    ]
-  },
-  {
-    id: '24',
-    description: getRandomArrayElement(DESCRIPTIONS),
-    name: getRandomArrayElement(DESTINATIONS),
-    pictures: [
-      {
-        srс: 'https://loremflickr.com/248/152?random=1',
-        description: 'Event photo'
-      },
-      {
-        srс: 'https://loremflickr.com/248/152?random=5',
-        description: 'Event photo'
       }
     ]
   }
 ];
 
+export const mockTripPoints = [
+  {
+    id: '1',
+    basePrice: 1100,
+    dateFrom: new Date('2019-07-10T22:55:56.845Z'),
+    dateTo: new Date('2019-07-11T11:22:13.375Z'),
+    destination: mockDestinations[0].id,
+    isFavorite: false,
+    offers: ['1'],
+    type: 'taxi'
+  },
+  {
+    id: '2',
+    basePrice: 1200,
+    dateFrom: new Date('2019-03-10T22:55:56.845Z'),
+    dateTo: new Date('2019-04-11T11:22:13.375Z'),
+    destination: mockDestinations[1].id,
+    isFavorite: true,
+    offers: ['1','2'],
+    type: 'flight'
+  },
+  {
+    id: '3',
+    basePrice: 500,
+    dateFrom: new Date('2019-05-11T22:55:56.845Z'),
+    dateTo: new Date('2019-05-12T11:22:13.375Z'),
+    destination: mockDestinations[2].id,
+    isFavorite: false,
+    offers: ['2'],
+    type: 'check-in'
+  },
 
-export function getPoint(){
-  return getRandomArrayElement(point);
-}
-
-export function getOffer() {
-  return getRandomArrayElement(extraOffers);
-}
-
-export function getDestination() {
-  return destinations;
-}
+];

@@ -12,7 +12,7 @@ export const DESCRIPTIONS = [
 
 export const TRIP_OFFERS = ['Order Uber', 'Add luggage', 'Switch to comfort', 'Rent a car', 'Add breakfast', 'Book tickets', 'Lunch in city'];
 
-export const DEFAULT_ROUTEPOINT = {
+export const DEFAULT_POINT = {
   id: '',
   basePrice: 0,
   dateFrom: null,
@@ -24,3 +24,4 @@ export const DEFAULT_ROUTEPOINT = {
 };
 
 export const POINTS_COUNT = 5;
+export const DATE_FORMAT = 'DD/MM/YY HH:mm';
