@@ -1,6 +1,7 @@
 import { DESCRIPTIONS, DESTINATIONS, TRIP_OFFERS } from '../const.js';
 import { getRandomArrayElement } from '../utils.js';
 
+
 export const mockDestinations = [
   {
     id: '1',
@@ -105,9 +106,9 @@ export const mockOffers = [
 export const mockTripPoints = [
   {
     id: '1',
-    basePrice: 1100,
-    dateFrom: new Date('2019-07-10T22:55:56.845Z'),
-    dateTo: new Date('2019-07-11T11:22:13.375Z'),
+    basePrice: 700,
+    dateFrom:  Date('2019-07-10T22:55:56.845Z'),
+    dateTo: Date('2019-07-11T11:22:13.375Z'),
     destination: mockDestinations[0].id,
     isFavorite: false,
     offers: ['1'],
@@ -116,8 +117,8 @@ export const mockTripPoints = [
   {
     id: '2',
     basePrice: 1200,
-    dateFrom: new Date('2019-03-10T22:55:56.845Z'),
-    dateTo: new Date('2019-04-11T11:22:13.375Z'),
+    dateFrom: Date('2019-03-10T22:55:56.845Z'),
+    dateTo: Date('2019-04-11T11:22:13.375Z'),
     destination: mockDestinations[1].id,
     isFavorite: true,
     offers: ['1','2'],
@@ -126,12 +127,13 @@ export const mockTripPoints = [
   {
     id: '3',
     basePrice: 500,
-    dateFrom: new Date('2019-05-11T22:55:56.845Z'),
-    dateTo: new Date('2019-05-12T11:22:13.375Z'),
+    dateFrom: Date('2019-05-11T22:55:56.845Z'),
+    dateTo: Date('2019-05-12T11:22:13.375Z'),
     destination: mockDestinations[2].id,
     isFavorite: false,
     offers: ['2'],
     type: 'check-in'
   },
-
 ];
+
+

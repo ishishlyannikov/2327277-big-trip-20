@@ -11,8 +11,6 @@ export default class OffersModel {
     return this.offers.find((offer) => offer.type === tripPoint.type).offers;
   }
 
-  getById(tripPoint){
-    return this.getByType(tripPoint).filter((offer) => tripPoint.offers.includes(offer.id));
-  }
 
 }
+

@@ -23,5 +23,4 @@ export const DEFAULT_POINT = {
   type: 'taxi',
 };
 
-export const POINTS_COUNT = 5;
 export const DATE_FORMAT = 'DD/MM/YY HH:mm';
