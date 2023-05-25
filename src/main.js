@@ -6,6 +6,7 @@ import PointsModel from './model/waypoint-model.js';
 import DestinationsModel from './model/destination-model.js';
 import OffersModel from './model/offer-model.js';
 import MockService from './service/mock-service.js';
+import { generateFilter } from './mock/filter.js';
 
 const tripInfoElement = document.querySelector('.trip-main');
 const filterElement = document.querySelector('.trip-controls__filters');
@@ -14,6 +15,7 @@ const mockService = new MockService();
 const pointsModel = new PointsModel(mockService);
 const destinationsModel = new DestinationsModel(mockService);
 const offersModel = new OffersModel(mockService);
+const filters = generateFilter(pointsModel.points);
 
 const formPresenter = new TripPresenter({
   tripEventsListContainer:sortElement,
@@ -23,6 +25,6 @@ const formPresenter = new TripPresenter({
 });
 
 render(new TripInfoView(), tripInfoElement, RenderPosition.AFTERBEGIN);
-render(new FilterView(), filterElement);
+render(new FilterView({filters}), filterElement);
 
 formPresenter.init();
