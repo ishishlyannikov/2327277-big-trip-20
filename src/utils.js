@@ -1,6 +1,9 @@
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
 dayjs.extend(duration);
+dayjs.extend(relativeTime);
 
 const MSEC_IN_SEC = 1000;
 const SEC_IN_MIN = 60;
@@ -12,6 +15,18 @@ const MSEC_IN_DAY = MSEC_IN_HOUR * HOUR_IN_DAY;
 
 export function humanizeDate(date, dateFormat) {
   return date ? dayjs(date).format(dateFormat) : '';
+}
+
+export function formatStringToDateTime (date) {
+  return dayjs(date).format('YYYY-MM-DDTHH:mm');
+}
+
+export function formatStringToShortDate (date) {
+  return dayjs(date).format('MMM DD');
+}
+
+export function formatStringToTime (date) {
+  return dayjs(date).format('HH:mm');
 }
 
 export function getTimeDiff(timeFrom, timeTo) {
@@ -29,15 +44,20 @@ export function getTimeDiff(timeFrom, timeTo) {
       pointDuration = dayjs.duration(timeDiff).format('mm[M]');
       break;
   }
-
   return pointDuration;
 }
 
+export function getRandomInteger (min, max) {
+  const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
+  const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
+  const result = Math.random() * (upper - lower + 1) + lower;
+  return Math.floor(result);
+}
+
 export function getRandomArrayElement(items) {
-  return items[Math.floor(Math.random() * items.length)];
+  return items[getRandomInteger(0, items.length - 1)];
 }
 
 export function capitalize(string) {
   return `${string[0].toUpperCase()}${string.slice(1)}`;
 }
-

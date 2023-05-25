@@ -1,47 +1,86 @@
 import EditEventView from '../view/edit-event-view.js';
 import TripEventsListView from '../view/trip-events-list-view.js';
-import UserEventsView from '../view/user-events-view.js';
-import { render } from '../render.js';
+import PointView from '../view/point-view.js';
+import SortsView from '../view/trip-sort-view.js';
+import { render, replace } from '../framework/render.js';
 
 export default class TripPresenter {
-  tripEventsListComponent = new TripEventsListView();
+  #tripEventsListComponent = new TripEventsListView();
+  #tripEventsListContainer = null;
+  #pointsModel = null;
+  #destinationsModel = null;
+  #offersModel = null;
+  #points = [];
 
   constructor({
     tripEventsListContainer,
     pointsModel,
     destinationsModel,
-    offersModel }) {
-    this.tripEventsListContainer = tripEventsListContainer;
-    this.pointsModel = pointsModel;
-    this.destinationsModel = destinationsModel;
-    this.offersModel = offersModel;
+    offersModel
+  }) {
+    this.#tripEventsListContainer = tripEventsListContainer;
+    this.#pointsModel = pointsModel;
+    this.#destinationsModel = destinationsModel;
+    this.#offersModel = offersModel;
+    this.#points = [...this.#pointsModel.points];
   }
 
   init() {
-    this.tripPoints = [...this.pointsModel.getTripPoints()];
-    this.destinations = [...this.destinationsModel.getDestinations()];
+    render(new SortsView(), this.#tripEventsListContainer);
+    render(this.#tripEventsListComponent, this.#tripEventsListContainer);
 
-    render(this.tripEventsListComponent, this.tripEventsListContainer);
-
-    render(
-      new EditEventView({
-        destination: this.destinationsModel.getById(this.tripPoints[0]),
-        point: this.tripPoints[0],
-        offers: this.offersModel.getByType(this.tripPoints[0]),
-      }),
-      this.tripEventsListComponent.getElement()
-    );
-
-    this.tripPoints.forEach((point) => {
-      render(new UserEventsView({
+    this.#points.forEach((point) => {
+      this.#renderPoint({
         point,
-        destination:this.destinationsModel.getById(point.destination),
-        offers: this.offersModel.getByType(point.type)
-      }),
-      this.eventListComponent.getElement()
-      );
+        pointDestinations: this.#destinationsModel.getById(point.destination),
+        pointOffers: this.#offersModel.getByType(point.type)
+      });
     });
   }
+
+  #renderPoint({point, pointDestinations, pointOffers}) {
+    const escKeyDownHandler = (evt) => {
+      if (evt.key === 'Escape') {
+        evt.preventDefault();
+        closeForm();
+      }
+    };
+
+    const pointComponent = new PointView({
+      point,
+      pointDestinations,
+      pointOffers,
+      onEditClick: () => {
+        replacePointToEditForm();
+        document.addEventListener('keydown', escKeyDownHandler);
+      }
+    });
+
+    const editPointComponent = new EditEventView({
+      point,
+      pointDestinations,
+      pointOffers,
+      onFormSubmit: () => {
+        closeForm();
+      },
+      onCloseEditClick: () => {
+        closeForm();
+      }
+    });
+
+    function replacePointToEditForm() {
+      replace(editPointComponent, pointComponent);
+    }
+
+    function replaceEditFormToPoint() {
+      replace(pointComponent, editPointComponent);
+    }
+
+    function closeForm() {
+      replaceEditFormToPoint();
+      document.removeEventListener('keydown', escKeyDownHandler);
+    }
+
+    render(pointComponent, this.#tripEventsListComponent.element);
+  }
 }
-
-

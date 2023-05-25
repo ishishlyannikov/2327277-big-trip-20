@@ -1,3 +1,7 @@
+export const OFFER_COUNT = 5;
+export const DESTINATION_COUNT = 5;
+export const POINT_COUNT = 5;
+
 export const WAYPOINT_TYPES = ['Check-in', 'Sightseeing', 'Restaurant', 'Taxi', 'Bus', 'Train', 'Ship', 'Drive', 'Flight'];
 
 export const DESTINATIONS = ['Amsterdam', 'Chamonix', 'Geneva', 'Rome', 'New York'];
@@ -13,7 +17,6 @@ export const DESCRIPTIONS = [
 export const TRIP_OFFERS = ['Order Uber', 'Add luggage', 'Switch to comfort', 'Rent a car', 'Add breakfast', 'Book tickets', 'Lunch in city'];
 
 export const DEFAULT_POINT = {
-  id: '',
   basePrice: 0,
   dateFrom: null,
   dateTo: null,
@@ -21,6 +24,17 @@ export const DEFAULT_POINT = {
   isFavorite: false,
   offers: [],
   type: 'taxi',
+};
+
+export const Price = {
+  MIN: 1,
+  MAX: 1000
+};
+
+export const Duration = {
+  HOUR: 5,
+  DAY: 5,
+  MIN: 59
 };
 
 export const DATE_FORMAT = 'DD/MM/YY HH:mm';
