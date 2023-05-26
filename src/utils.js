@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { FilterType } from './const.js';
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
@@ -61,3 +62,23 @@ export function getRandomArrayElement(items) {
 export function capitalize(string) {
   return `${string[0].toUpperCase()}${string.slice(1)}`;
 }
+
+function isPointFuture(point){
+  return (dayjs().isBefore(point.dateFrom));
+}
+
+function isPointPast(point){
+  return (dayjs().isAfter(point.dateTo));
+}
+
+function isPointPresent(point){
+  return (dayjs().isAfter(point.dateFrom) && dayjs().isBefore(point.dateTo));
+}
+
+export const filter = {
+  [FilterType.EVERYTHING]: (points) => [...points],
+  [FilterType.FUTURE]: (points) => points.filter((point) => isPointFuture(point)),
+  [FilterType.PRESENT]: (points) => points.filter((point) => isPointPresent(point)),
+  [FilterType.PAST]: (points) => points.filter((point) => isPointPast(point)),
+};
+
