@@ -82,3 +82,6 @@ export const filter = {
   [FilterType.PAST]: (points) => points.filter((point) => isPointPast(point)),
 };
 
+export function updatePoint (points,update) {
+  return points.map((point) => point.id === update.id ? update : point);
+}
