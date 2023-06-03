@@ -35,12 +35,6 @@ function createTripSortTemplate() {
   );
 }
 
-// export default class SortView extends AbstractView {
-//   get template() {
-//     return createTripSortTemplate();
-//   }
-// }
-
 export default class SortView extends AbstractView {
   #handleSortTypeChange = null;
 
