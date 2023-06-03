@@ -86,27 +86,18 @@ export function updatePoint (points,update) {
   return points.map((point) => point.id === update.id ? update : point);
 }
 
-export const sortByTime = (pointA, pointB) => {
+export function sortByTime (pointA, pointB) {
   const durationA = dayjs(pointA.dateTo).diff(dayjs(pointA.dateFrom));
   const durationB = dayjs(pointB.dateTo).diff(dayjs(pointB.dateFrom));
 
   return durationB - durationA;
-};
+}
 
-export const sortByPrice = (pointA, pointB) => pointB.basePrice - pointA.basePrice;
+export function sortByPrice (pointA, pointB) {
+  return pointB.basePrice - pointA.basePrice;
+}
 
-export const sortByDay = (pointA, pointB) => dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
+export function sortByDay (pointA, pointB) {
+  return dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
+}
 
-
-// export function durationWaypoint(point) {
-//   return dayjs(point.dateTo).diff(dayjs(point.dateFrom));
-// }
-
-
-// export function sortByTime(points) {
-//   return points.sort((a, b) => durationWaypoint(b) - durationWaypoint(a));
-// }
-
-// export function sortByPrice(points) {
-//   return points.sort((a, b) => b.basePrice - a.basePrice);
-// }
