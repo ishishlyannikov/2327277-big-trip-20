@@ -4,7 +4,9 @@ import { DESTINATIONS, DEFAULT_POINT, WAYPOINT_TYPES, DATE_FORMAT } from '../con
 
 
 function createEditEventTemplate({point, pointDestinations, pointOffers}) {
-  const {basePrice, type, destination, dateFrom, dateTo} = point;
+  const {basePrice, type, dateFrom, dateTo} = point;
+
+  const destination = pointDestinations.find((el) => el.id === point.destination);
 
   const startTimeInForm = humanizeDate(dateFrom, DATE_FORMAT);
   const endTimeInForm = humanizeDate(dateTo, DATE_FORMAT);
@@ -72,7 +74,7 @@ function createEditEventTemplate({point, pointDestinations, pointOffers}) {
         <input class="event__input  event__input--destination"
         id="event-destination-1" type="text"
         name="event-destination"
-        value="${pointDestinations.find((el) => el.id === destination).name}" list="destination-list-1">
+        value="${destination.name}" list="destination-list-1">
         <datalist id="destination-list-1">
         ${createCitiesListTemplate(DESTINATIONS)}
         </datalist>
@@ -111,10 +113,10 @@ function createEditEventTemplate({point, pointDestinations, pointOffers}) {
       </section>
       <section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-        <p class="event__destination-description">${pointDestinations.find((el) => el.id === destination).description}</p>
+        <p class="event__destination-description">${destination.description}</p>
         <div class="event__photos-container">
             <div class="event__photos-tape">
-            ${createPicturesTemplate(pointDestinations.find((el) => el.id === destination).pictures)}
+            ${createPicturesTemplate(destination.pictures)}
             </div>
         </div>
       </section>
