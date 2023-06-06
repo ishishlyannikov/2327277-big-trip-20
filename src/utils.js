@@ -85,3 +85,19 @@ export const filter = {
 export function updatePoint (points,update) {
   return points.map((point) => point.id === update.id ? update : point);
 }
+
+export function sortByTime (pointA, pointB) {
+  const durationA = dayjs(pointA.dateTo).diff(dayjs(pointA.dateFrom));
+  const durationB = dayjs(pointB.dateTo).diff(dayjs(pointB.dateFrom));
+
+  return durationB - durationA;
+}
+
+export function sortByPrice (pointA, pointB) {
+  return pointB.basePrice - pointA.basePrice;
+}
+
+export function sortByDay (pointA, pointB) {
+  return dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
+}
+
