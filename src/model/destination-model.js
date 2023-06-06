@@ -20,4 +20,3 @@ export default class DestinationsModel {
       .find((destination) => destination.name === name);
   }
 }
-
