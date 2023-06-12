@@ -101,3 +101,7 @@ export function sortByDay (pointA, pointB) {
   return dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
 }
 
+export const isPatchUpdate = (point, update) => (
+  dayjs(point.dateFrom).isSame(dayjs(update.dateFrom)) &&
+  dayjs(point.dateTo).isSame(dayjs(update.dateTo))
+);

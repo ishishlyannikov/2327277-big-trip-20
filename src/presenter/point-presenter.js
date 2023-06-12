@@ -2,6 +2,8 @@ import EditEventView from '../view/edit-event-view.js';
 import PointView from '../view/point-view.js';
 import { Mode } from '../const.js';
 import { render, remove, replace} from '../framework/render.js';
+import { UserAction, UpdateType } from '../const.js';
+import { isPatchUpdate } from '../utils.js';
 
 
 export default class PointPresenter {
@@ -48,7 +50,8 @@ export default class PointPresenter {
       pointDestinations: this.#destinationsModel.destinations,
       pointOffers: this.#offersModel.offers,
       onResetClick: this.#resetButtonClickHandler,
-      onSubmitClick: this.#formSubmitHandler
+      onSubmitClick: this. #handleFormSubmit,
+      onDeleteClick: this.#handleDeleteClick
     });
 
     if (prevPointComponent === null || prevEditComponent === null) {
@@ -114,8 +117,26 @@ export default class PointPresenter {
     this.#replaceFormToPoint();
   };
 
-  #formSubmitHandler = (point) => {
-    this.#changeData(point);
+  // #formSubmitHandler = (point) => {
+  //   this.#changeData(point);
+  //   this.#replaceFormToPoint();
+  // };
+
+  #handleFormSubmit = (update) => {
+    const updateType = isPatchUpdate(this.#point, update) ? UpdateType.PATCH : UpdateType.MINOR;
+    this.#changeData(
+      UserAction.UPDATE_POINT,
+      updateType,
+      update,
+    );
     this.#replaceFormToPoint();
+  };
+
+  #handleDeleteClick = (point) => {
+    this.#changeData(
+      UserAction.DELETE_POINT,
+      UpdateType.MINOR,
+      point,
+    );
   };
 }
