@@ -18,21 +18,6 @@ export default class PointsModel extends Observable {
     return this.#points.find((point) => point.id === id);
   }
 
-  // update(updateType, update) {
-  //   this.#points = this.#service.updatePoints(update);
-  //   this._notify(updateType, update);
-  // }
-
-  // add(updateType, point) {
-  //   this.#points = this.#service.addPoint(point);
-  //   this._notify(updateType,point);
-  // }
-
-  // delete(updateType, point) {
-  //   this.#points = this.#service.deletePoint(point);
-  //   this._notify(updateType,point);
-  // }
-
   update(updateType, update){
     const index = this.#points.findIndex((point) => point.id === update.id);
     this.#points = [

@@ -1,6 +1,6 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import { formatStringToDateTime, formatStringToShortDate, formatStringToTime, getTimeDiff } from '../utils.js';
-
+import he from 'he';
 
 function createPointsViewTemplate ({point, pointDestinations, pointOffers}) {
   const {basePrice, dateFrom, dateTo, isFavorite, type} = point;
@@ -33,7 +33,7 @@ function createPointsViewTemplate ({point, pointDestinations, pointOffers}) {
             <p class="event__duration">${getTimeDiff(dateFrom, dateTo)}</p>
           </div>
           <p class="event__price">
-          &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
+          &euro;&nbsp;<span class="event__price-value">${he.encode(basePrice.toString())}</span></span>
           </p>
           <h4 class="visually-hidden">Offers:</h4>
           <ul class="event__selected-offers">
@@ -98,3 +98,5 @@ export default class PointView extends AbstractView {
     this.#handleFavoriteClick();
   };
 }
+
+

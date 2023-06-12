@@ -97,8 +97,12 @@ export function sortByPrice (pointA, pointB) {
   return pointB.basePrice - pointA.basePrice;
 }
 
-export function sortByDay (pointA, pointB) {
-  return dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
+export function sortByDay(waypoints) {
+  return waypoints.sort((a, b) => getDateDiff(a.dateFrom, b.dateFrom));
+}
+
+function getDateDiff(dateOne, dateTwo) {
+  return dayjs(dateOne).unix() - dayjs(dateTwo).unix();
 }
 
 export const isPatchUpdate = (point, update) => (

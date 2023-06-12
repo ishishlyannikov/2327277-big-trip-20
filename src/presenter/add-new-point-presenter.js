@@ -21,21 +21,10 @@ export default class AddNewPointPresenter {
   }
 
   init() {
-    // const allDestinations = [...this.#destinationsModel.destinations];
-    // const allOffers = [...this.#offersModel.offers];
 
     if (this.#pointEditComponent !== null) {
       return;
     }
-
-    // this.#pointEditComponent = new EditEventView({
-    //   onFormSubmit: this.#handleFormSubmit,
-    //   allDestinations: allDestinations,
-    //   allOffers: allOffers,
-    //   onDeleteClick: this.#handleDeleteClick,
-    //   onCancelClick: this.#handleCancelClick,
-    //   isCreatingMode: true
-    // });
 
     this.#pointEditComponent = new EditEventView({
       destinations: this.#destinationsModel.destinations,
