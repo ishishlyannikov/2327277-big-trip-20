@@ -23,6 +23,7 @@
     "css-loader": "6.7.3",
     "eslint": "8.38.0",
     "eslint-config-htmlacademy": "9.0.0",
+    "he": "1.2.0",
     "html-webpack-plugin": "5.5.1",
     "install": "0.13.0",
     "npm": "9.6.5",
@@ -36,6 +37,7 @@
   },
   "dependencies": {
     "dayjs": "1.11.7",
-    "flatpickr": "4.6.13"
+    "flatpickr": "4.6.13",
+    "nanoid": "4.0.2"
   }
 }

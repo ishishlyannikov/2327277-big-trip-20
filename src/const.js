@@ -46,13 +46,6 @@ export const FilterType = {
   PAST: 'past'
 };
 
-export const FilterEmptyMessage = {
-  [FilterType.EVERYTHING]: 'Click New Event to create your first point',
-  [FilterType.FUTURE]: 'There are no future events now',
-  [FilterType.PRESENT]: 'There are no present events now',
-  [FilterType.PAST]: 'There are no past events now'
-};
-
 export const Mode = {
   DEFAULT: 'DEFAULT',
   EDITING: 'EDITING',
@@ -64,3 +57,19 @@ export const SortType = {
   PRICE: 'price',
 };
 
+export const UserAction = {
+  UPDATE_POINT: 'UPDATE_POINT',
+  ADD_POINT: 'ADD_POINT',
+  DELETE_POINT: 'DELETE_POINT',
+};
+
+export const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
+
+export const EditType = {
+  EDITING: 'EDITING',
+  CREATING: 'CREATING'
+};
