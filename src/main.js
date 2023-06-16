@@ -6,7 +6,10 @@ import PointsModel from './model/waypoint-model.js';
 import DestinationsModel from './model/destination-model.js';
 import OffersModel from './model/offer-model.js';
 import FilterModel from './model/filters-model.js';
-import MockService from './service/mock-service.js';
+import PointsApiService from './service/points-api-service';
+
+const AUTHORIZATION = 'Basic try75Dev23Job2023';
+const END_POINT = 'https://20.ecmascript.pages.academy/big-trip';
 
 const bodyElement = document.querySelector('body');
 const headerElement = bodyElement.querySelector('.page-header');
@@ -15,22 +18,28 @@ const filterElement = tripInfoElement.querySelector('.trip-controls__filters');
 const mainElement = bodyElement.querySelector('.page-main');
 const eventListElement = mainElement.querySelector('.trip-events');
 
-const mockService = new MockService();
-const pointsModel = new PointsModel(mockService);
-const destinationsModel = new DestinationsModel(mockService);
-const offersModel = new OffersModel(mockService);
+const pointsApiService = new PointsApiService(END_POINT, AUTHORIZATION);
+const offersModel = new OffersModel(pointsApiService);
+const destinationsModel = new DestinationsModel(pointsApiService);
+
+const pointsModel = new PointsModel({
+  service:pointsApiService,
+  offersModel,
+  destinationsModel
+});
+
 const filterModel = new FilterModel();
 
-
 const filterPresenter = new FilterPresenter({
-  container:filterElement,
+  filterContainer:filterElement,
   pointsModel,
   filterModel
 });
 
 
 const formPresenter = new TripPresenter({
-  tripEventsListContainer:eventListElement,
+  container:eventListElement,
+  newPointButtonContainer:mainElement,
   pointsModel,
   destinationsModel,
   offersModel,
@@ -39,6 +48,6 @@ const formPresenter = new TripPresenter({
 
 render(new TripInfoView(), tripInfoElement, RenderPosition.AFTERBEGIN);
 
-
 formPresenter.init();
 filterPresenter.init();
+pointsModel.init();

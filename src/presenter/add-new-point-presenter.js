@@ -4,16 +4,20 @@ import EditEventView from '../view/edit-event-view.js';
 import { UserAction, UpdateType, EditType } from '../const.js';
 
 export default class AddNewPointPresenter {
-  #tripEventsListComponent = null;
+  #tripEventsListContainer = null;
   #handleDataChange = null;
   #handleDestroy = null;
   #destinationsModel = null;
   #offersModel = null;
-
   #pointEditComponent = null;
 
-  constructor({tripEventsListComponent, onDataChange, onDestroy, destinationsModel, offersModel}) {
-    this.#tripEventsListComponent = tripEventsListComponent;
+  constructor({
+    tripEventsListContainer,
+    onDataChange,
+    onDestroy,
+    destinationsModel,
+    offersModel}) {
+    this.#tripEventsListContainer = tripEventsListContainer;
     this.#handleDataChange = onDataChange;
     this.#handleDestroy = onDestroy;
     this.#destinationsModel = destinationsModel;
@@ -35,7 +39,7 @@ export default class AddNewPointPresenter {
       type: EditType.CREATING
     });
 
-    render(this.#pointEditComponent, this.#tripEventsListComponent, RenderPosition.AFTERBEGIN);
+    render(this.#pointEditComponent, this.#tripEventsListContainer, RenderPosition.AFTERBEGIN);
 
     document.addEventListener('keydown', this.#escKeyDownHandler);
   }
@@ -77,3 +81,4 @@ export default class AddNewPointPresenter {
     }
   };
 }
+

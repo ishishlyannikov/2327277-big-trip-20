@@ -105,7 +105,5 @@ function getDateDiff(dateOne, dateTwo) {
   return dayjs(dateOne).unix() - dayjs(dateTwo).unix();
 }
 
-export const isPatchUpdate = (point, update) => (
-  dayjs(point.dateFrom).isSame(dayjs(update.dateFrom)) &&
-  dayjs(point.dateTo).isSame(dayjs(update.dateTo))
-);
+export const isDatesEqual = (dateA, dateB) => dayjs(dateA).isSame(dateB);
+

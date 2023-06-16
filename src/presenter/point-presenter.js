@@ -3,7 +3,7 @@ import PointView from '../view/point-view.js';
 import { Mode } from '../const.js';
 import { render, remove, replace} from '../framework/render.js';
 import { UserAction, UpdateType } from '../const.js';
-import { isPatchUpdate } from '../utils.js';
+import { isDatesEqual } from '../utils.js';
 
 
 export default class PointPresenter {
@@ -23,7 +23,8 @@ export default class PointPresenter {
     destinationsModel,
     offersModel,
     changeData,
-    changeMode}) {
+    changeMode
+  }) {
     this.#container = container;
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
@@ -118,13 +119,15 @@ export default class PointPresenter {
   };
 
   #handleFormSubmit = (update) => {
-    const updateType = isPatchUpdate(this.#point, update) ? UpdateType.PATCH : UpdateType.MINOR;
+    const isMinorUpdate = !isDatesEqual(this.#point.dateFrom, update.dateFrom) ||
+      !isDatesEqual(this.#point.dateTo, update.dateTo) ||
+      !(this.#point.basePrice === update.basePrice);
     this.#changeData(
       UserAction.UPDATE_POINT,
-      updateType,
+      isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
       update,
     );
-    this.#replaceFormToPoint();
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
   #handleDeleteClick = (point) => {
