@@ -1,10 +1,17 @@
-export default class DestinationsModel {
-  #service;
-  #destinations;
+import Observable from '../framework/observable.js';
 
-  constructor (service) {
-    this.#service = service;
-    this.#destinations = this.#service.getDestinations();
+export default class DestinationsModel extends Observable{
+  #pointsApiService = null;
+  #destinations = [];
+
+  constructor ({pointsApiService}) {
+    super();
+    this.#pointsApiService = pointsApiService;
+  }
+
+  async init(){
+    this.#destinations = await this.#pointsApiService.destinations;
+    return this.#destinations;
   }
 
   get destinations() {
@@ -14,5 +21,4 @@ export default class DestinationsModel {
   getById(id) {
     return this.#destinations.find((destination) => destination.id === id);
   }
-
 }

@@ -23,7 +23,7 @@ function createPointsViewTemplate ({point, pointDestinations, pointOffers}) {
           <div class="event__type">
           <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
           </div>
-          <h3 class="event__title">${type} ${pointDestinations.name}</h3>
+          <h3 class="event__title">${type} ${pointDestinations?.name}</h3>
           <div class="event__schedule">
             <p class="event__time">
             <time class="event__start-time" datetime="${formatStringToTime(dateFrom)}">${formatStringToTime(dateFrom)}</time>
@@ -53,7 +53,6 @@ function createPointsViewTemplate ({point, pointDestinations, pointOffers}) {
 
   );
 }
-
 
 export default class PointView extends AbstractView {
   #point = null;
