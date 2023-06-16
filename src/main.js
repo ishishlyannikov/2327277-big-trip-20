@@ -6,7 +6,7 @@ import PointsModel from './model/waypoint-model.js';
 import DestinationsModel from './model/destination-model.js';
 import OffersModel from './model/offer-model.js';
 import FilterModel from './model/filters-model.js';
-import PointsApiService from './service/points-api-service';
+import PointsApiService from './service/points-api-service.js';
 
 const AUTHORIZATION = 'Basic try75Dev23Job2023';
 const END_POINT = 'https://20.ecmascript.pages.academy/big-trip';

@@ -74,10 +74,10 @@ export default class TripPresenter {
   }
 
   init(){
-    this.#newPointButton = new NewPointButtonView({
-      onClick: this.#handleNewPointButtonClick
-    });
-    render(this.#newPointButton, this.#newPointButtonContainer);
+    // this.#newPointButton = new NewPointButtonView({
+    //   onClick: this.#handleNewPointButtonClick
+    // });
+    // render(this.#newPointButton, this.#newPointButtonContainer);
 
     this.#renderForm();
   }
