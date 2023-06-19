@@ -1,10 +1,10 @@
 import Observable from '../framework/observable.js';
 
-export default class DestinationsModel extends Observable{
+export default class DestinationsModel extends Observable {
   #pointsApiService = null;
   #destinations = [];
 
-  constructor ({pointsApiService}) {
+  constructor({pointsApiService}) {
     super();
     this.#pointsApiService = pointsApiService;
   }

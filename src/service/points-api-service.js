@@ -1,4 +1,4 @@
-import ApiService from '../framework/api-service';
+import ApiService from '../framework/api-service.js';
 
 const Method = {
   GET: 'GET',
@@ -73,3 +73,4 @@ export default class PointsApiService extends ApiService {
     return adaptedPoint;
   }
 }
+
