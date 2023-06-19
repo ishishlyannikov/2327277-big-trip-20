@@ -87,5 +87,3 @@ export default class PointsModel extends Observable {
     return adaptedPoint;
   }
 }
-
-

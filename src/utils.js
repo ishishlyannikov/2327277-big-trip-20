@@ -1,18 +1,5 @@
 import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import { FilterType } from './const.js';
-
-dayjs.extend(duration);
-dayjs.extend(relativeTime);
-
-const MSEC_IN_SEC = 1000;
-const SEC_IN_MIN = 60;
-const MIN_IN_HOUR = 60;
-const HOUR_IN_DAY = 24;
-
-const MSEC_IN_HOUR = MSEC_IN_SEC * SEC_IN_MIN * MIN_IN_HOUR;
-const MSEC_IN_DAY = MSEC_IN_HOUR * HOUR_IN_DAY;
 
 export function humanizeDate(date, dateFormat) {
   return date ? dayjs(date).format(dateFormat) : '';
@@ -30,38 +17,48 @@ export function formatStringToTime (date) {
   return dayjs(date).format('HH:mm');
 }
 
-export function getTimeDiff(timeFrom, timeTo) {
-  const timeDiff = dayjs(timeTo).diff(timeFrom);
-  let pointDuration = 0;
+const getOfferElementsByType = (type, offers) => offers?.find((offer) => type === offer.type);
 
-  switch (true) {
-    case (timeDiff >= MSEC_IN_DAY):
-      pointDuration = dayjs.duration(timeDiff).format('DD[D] HH[H] mm[M]');
-      break;
-    case (timeDiff >= MSEC_IN_HOUR):
-      pointDuration = dayjs.duration(timeDiff).format('HH[H] mm[M]');
-      break;
-    case (timeDiff < MSEC_IN_HOUR):
-      pointDuration = dayjs.duration(timeDiff).format('mm[M]');
-      break;
+export const getCheckedOffers = (type, pointOffers, offers) => {
+  const offersByType = getOfferElementsByType(type, offers);
+  if (!offersByType || !offersByType.offers) {
+    return;
   }
-  return pointDuration;
-}
+  const checkedOffers = offersByType.offers.filter((offer) =>
+    pointOffers
+      .some((offerId) => offerId === offer.id));
+  return checkedOffers;
+};
 
-export function getRandomInteger (min, max) {
-  const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
-  const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
-}
+export const getDestination = (id, destinations) => destinations.find((destination) => destination.id === id);
 
-export function getRandomArrayElement(items) {
-  return items[getRandomInteger(0, items.length - 1)];
-}
+export const calculateDuration = (start, end) => {
+  const interval = new Date(end - start);
 
-export function capitalize(string) {
-  return `${string[0].toUpperCase()}${string.slice(1)}`;
-}
+  return {
+    days: interval.getUTCDate() - 1,
+    hours: interval.getUTCHours(),
+    minutes: interval.getUTCMinutes()
+  };
+};
+
+export const formatDuration = (interval) => {
+  const duration = [];
+  if (interval.days !== 0) {
+    duration[0] = String(interval.days).padStart(2, '0');
+    duration[0] += 'D';
+  }
+  if (interval.hours !== 0) {
+    duration[1] = String(interval.hours).padStart(2, '0');
+    duration[1] += 'H';
+  }
+  if (interval.minutes !== 0) {
+    duration[2] = String(interval.minutes).padStart(2, '0');
+    duration[2] += 'M';
+  }
+
+  return duration.join('');
+};
 
 function isPointFuture(point){
   return (dayjs().isBefore(point.dateFrom));
@@ -76,15 +73,18 @@ function isPointPresent(point){
 }
 
 export const filter = {
-  [FilterType.EVERYTHING]: (points) => [...points],
+  [FilterType.EVERYTHING]: (points) => points,
   [FilterType.FUTURE]: (points) => points.filter((point) => isPointFuture(point)),
   [FilterType.PRESENT]: (points) => points.filter((point) => isPointPresent(point)),
   [FilterType.PAST]: (points) => points.filter((point) => isPointPast(point)),
 };
 
-export function updatePoint (points,update) {
-  return points.map((point) => point.id === update.id ? update : point);
-}
+export const getOffersByType = (offers, offerType) => {
+  const offersByType = offers.find((offer) => offer.type === offerType);
+  return offersByType ? offersByType.offers : [];
+};
+
+export const isDatesEqual = (dateA, dateB) => dayjs(dateA).isSame(dateB);
 
 export function sortByTime (pointA, pointB) {
   const durationA = dayjs(pointA.dateTo).diff(dayjs(pointA.dateFrom));
@@ -97,13 +97,6 @@ export function sortByPrice (pointA, pointB) {
   return pointB.basePrice - pointA.basePrice;
 }
 
-export function sortByDay(waypoints) {
-  return waypoints.sort((a, b) => getDateDiff(a.dateFrom, b.dateFrom));
+export function sortByDay (pointA, pointB) {
+  return dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
 }
-
-function getDateDiff(dateOne, dateTwo) {
-  return dayjs(dateOne).unix() - dayjs(dateTwo).unix();
-}
-
-export const isDatesEqual = (dateA, dateB) => dayjs(dateA).isSame(dateB);
-

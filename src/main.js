@@ -1,14 +1,14 @@
 import {RenderPosition, render} from './framework/render.js';
-import TripInfoView from './view/trip-info-view.js';
 import TripPresenter from './presenter/trip-presenter.js';
-import FilterPresenter from './presenter/filter-presenter.js';
-import PointsModel from './model/waypoint-model.js';
-import DestinationsModel from './model/destination-model.js';
-import OffersModel from './model/offer-model.js';
-import FilterModel from './model/filters-model.js';
-import PointsApiService from './service/points-api-service';
+import FiltersPresenter from './presenter/filter-presenter.js';
+import PointsModel from './model/points-model.js';
+import DestinationsModel from './model/destinations-model.js';
+import OffersModel from './model/offers-model.js';
+import FiltersModel from './model/filters-model.js';
+import PointsApiService from './service/points-api-service.js';
+import NewPointButtonView from './view/new-point-button-view.js';
 
-const AUTHORIZATION = 'Basic try75Dev23Job2023';
+const AUTHORIZATION = 'Basic try75Dev24Job2023';
 const END_POINT = 'https://20.ecmascript.pages.academy/big-trip';
 
 const bodyElement = document.querySelector('body');
@@ -19,35 +19,46 @@ const mainElement = bodyElement.querySelector('.page-main');
 const eventListElement = mainElement.querySelector('.trip-events');
 
 const pointsApiService = new PointsApiService(END_POINT, AUTHORIZATION);
-const offersModel = new OffersModel(pointsApiService);
-const destinationsModel = new DestinationsModel(pointsApiService);
+const offersModel = new OffersModel({pointsApiService});
+const destinationsModel = new DestinationsModel({pointsApiService});
 
 const pointsModel = new PointsModel({
-  service:pointsApiService,
+  pointsApiService:pointsApiService,
   offersModel,
   destinationsModel
 });
 
-const filterModel = new FilterModel();
+const filtersModel = new FiltersModel();
 
-const filterPresenter = new FilterPresenter({
-  filterContainer:filterElement,
-  pointsModel,
-  filterModel
-});
-
+const filtersPresenter = new FiltersPresenter({ filterElement, filtersModel, pointsModel });
 
 const formPresenter = new TripPresenter({
-  container:eventListElement,
-  newPointButtonContainer:mainElement,
-  pointsModel,
+  headerContainer: tripInfoElement,
+  filtersModel,
+  waypointListContainer: eventListElement,
   destinationsModel,
   offersModel,
-  filterModel
+  pointsModel,
+  onNewPointDestroy: handleNewPointFormClose,
+  addPointButtonStatus: addPointButtonStatus
 });
 
-render(new TripInfoView(), tripInfoElement, RenderPosition.AFTERBEGIN);
+const addNewWaypointComponent = new NewPointButtonView({ onNewEventClick: handleAddNewWaypoint });
+
+function handleAddNewWaypoint() {
+  formPresenter.createWaypoint();
+  addPointButtonStatus(true);
+}
+
+function handleNewPointFormClose() {
+  addPointButtonStatus(false);
+}
+
+function addPointButtonStatus(value) {
+  addNewWaypointComponent.element.disabled = value;
+}
+render(addNewWaypointComponent, tripInfoElement, RenderPosition.BEFOREEND);
 
 formPresenter.init();
-filterPresenter.init();
+filtersPresenter.init();
 pointsModel.init();

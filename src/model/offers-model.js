@@ -24,10 +24,5 @@ export default class OffersModel extends Observable{
       return offersByType.offers;
     }
   }
-
-  getByIds(offersByType, ids){
-    return [...offersByType.filter((offer) => ids.find((id) => offer.id === id))];
-  }
 }
-
 
