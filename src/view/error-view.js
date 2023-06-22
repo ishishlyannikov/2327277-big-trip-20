@@ -8,7 +8,7 @@ const createLoadingErrorTemplate = () => `
 
 export default class ErrorView extends AbstractView {
 
-  get template(){
+  get template() {
     return createLoadingErrorTemplate();
   }
 }

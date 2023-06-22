@@ -2,15 +2,13 @@ import AbstractView from '../framework/view/abstract-view.js';
 import { formatStringToDateTime, formatStringToShortDate, formatStringToTime, calculateDuration, formatDuration } from '../utils.js';
 import he from 'he';
 
-function createPointsViewTemplate(point, pointDestination, pointOffers) {
+const createPointsViewTemplate = (point, pointDestination, pointOffers) => {
   const {basePrice, dateFrom, dateTo, isFavorite, type} = point;
-
   const duration = calculateDuration(dateFrom, dateTo);
   const eventDuration = formatDuration(duration);
-
   const checkedOffers = pointOffers?.filter((offer) => point.offers.includes(offer.id));
 
-  function createOffersTemplate () {
+  const createOffersTemplate = () => {
     let allOffers = '';
     checkedOffers?.forEach((checkedOffer) => {
       const { title, price } = checkedOffer;
@@ -23,16 +21,16 @@ function createPointsViewTemplate(point, pointDestination, pointOffers) {
       allOffers += selectedOffer;
     });
     return allOffers;
-  }
+  };
 
   return (
     `<li class="trip-events__item">
       <div class="event">
         <time class="event__date" datetime="${formatStringToDateTime(dateFrom)}">${formatStringToShortDate(dateFrom)}</time>
         <div class="event__type">
-          <img class="event__type-icon" width="42" height="42" src="img/icons/${type.toLowerCase()}.png" alt="Event ${type} icon">
+        <img class="event__type-icon" width="42" height="42" src="img/icons/${he.encode(type.toLowerCase())}.png" alt="Event ${he.encode(type)} icon">
         </div>
-        <h3 class="event__title">${type} ${he.encode(pointDestination?.name)}</h3>
+        <h3 class="event__title">${he.encode(type)} ${he.encode(pointDestination?.name)}</h3>
 
         <div class="event__schedule">
           <p class="event__time">
@@ -61,7 +59,7 @@ function createPointsViewTemplate(point, pointDestination, pointOffers) {
       </div>
     </li>`
   );
-}
+};
 
 export default class PointView extends AbstractView {
   #point = null;

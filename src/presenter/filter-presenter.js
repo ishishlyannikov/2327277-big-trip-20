@@ -18,7 +18,7 @@ export default class FiltersPresenter {
     this.#filtersModel.addObserver(this.#handleModelEvent);
   }
 
-  get getFilterData() {
+  get filters() {
     const points = this.#pointsModel.points;
 
     return Object.values(FilterType).map((type) => ({
@@ -28,7 +28,7 @@ export default class FiltersPresenter {
   }
 
   init() {
-    const filters = this.getFilterData;
+    const filters = this.filters;
     const prevFilterComponent = this.#filterComponent;
 
     this.#filterComponent = new FilterView({

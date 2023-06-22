@@ -76,25 +76,25 @@ export default class PointPresenter {
     remove(prevPointEditComponent);
   }
 
-  setSaving() {
+  setSaving = () => {
     if (this.#mode === Mode.EDITING) {
       this.#pointEditComponent.updateElement({
         isDisabled: true,
         isSaving: true,
       });
     }
-  }
+  };
 
-  setDeleting() {
+  setDeleting = () => {
     if (this.#mode === Mode.EDITING) {
       this.#pointEditComponent.updateElement({
         isDisabled: true,
         isDeleting: true,
       });
     }
-  }
+  };
 
-  setAborting() {
+  setAborting = () => {
     if (this.#mode === Mode.DEFAULT) {
       this.#pointComponent.shake();
       return;
@@ -109,7 +109,7 @@ export default class PointPresenter {
     };
 
     this.#pointEditComponent.shake(resetFormState);
-  }
+  };
 
   resetView = () => {
     if (this.#mode !== Mode.DEFAULT) {

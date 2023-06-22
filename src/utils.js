@@ -1,10 +1,6 @@
 import dayjs from 'dayjs';
 import { FilterType } from './const.js';
 
-export function humanizeDate(date, dateFormat) {
-  return date ? dayjs(date).format(dateFormat) : '';
-}
-
 export function formatStringToDateTime (date) {
   return dayjs(date).format('YYYY-MM-DDTHH:mm');
 }
@@ -19,7 +15,7 @@ export function formatStringToTime (date) {
 
 const getOfferElementsByType = (type, offers) => offers?.find((offer) => type === offer.type);
 
-export const getCheckedOffers = (type, pointOffers, offers) => {
+export function getCheckedOffers (type, pointOffers, offers) {
   const offersByType = getOfferElementsByType(type, offers);
   if (!offersByType || !offersByType.offers) {
     return;
@@ -28,11 +24,13 @@ export const getCheckedOffers = (type, pointOffers, offers) => {
     pointOffers
       .some((offerId) => offerId === offer.id));
   return checkedOffers;
-};
+}
 
-export const getDestination = (id, destinations) => destinations.find((destination) => destination.id === id);
+export function getDestination (id, destinations) {
+  return destinations.find((destination) => destination.id === id);
+}
 
-export const calculateDuration = (start, end) => {
+export function calculateDuration (start, end) {
   const interval = new Date(end - start);
 
   return {
@@ -40,9 +38,9 @@ export const calculateDuration = (start, end) => {
     hours: interval.getUTCHours(),
     minutes: interval.getUTCMinutes()
   };
-};
+}
 
-export const formatDuration = (interval) => {
+export function formatDuration (interval) {
   const duration = [];
   if (interval.days !== 0) {
     duration[0] = String(interval.days).padStart(2, '0');
@@ -58,7 +56,7 @@ export const formatDuration = (interval) => {
   }
 
   return duration.join('');
-};
+}
 
 function isPointFuture(point){
   return (dayjs().isBefore(point.dateFrom));
@@ -79,12 +77,14 @@ export const filter = {
   [FilterType.PAST]: (points) => points.filter((point) => isPointPast(point)),
 };
 
-export const getOffersByType = (offers, offerType) => {
+export function getOffersByType (offers, offerType) {
   const offersByType = offers.find((offer) => offer.type === offerType);
   return offersByType ? offersByType.offers : [];
-};
+}
 
-export const isDatesEqual = (dateA, dateB) => dayjs(dateA).isSame(dateB);
+export function isDatesEqual (dateA, dateB) {
+  return dayjs(dateA).isSame(dateB);
+}
 
 export function sortByTime (pointA, pointB) {
   const durationA = dayjs(pointA.dateTo).diff(dayjs(pointA.dateFrom));

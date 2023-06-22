@@ -113,6 +113,87 @@ export default class TripPresenter {
     this.#pointPresenters.set(point?.id, pointPresenter);
   };
 
+  #renderLoading = () => {
+    render(this.#loadingComponent, this.#waypointListContainer);
+  };
+
+  #clearPointList = ({resetSortType = false} = {}) => {
+    this.#pointPresenters.forEach((presenter) => presenter.destroy());
+    this.#pointPresenters.clear();
+    this.#newPointPresenter.destroy();
+    remove(this.#sortComponent);
+    remove(this.#tripInfoComponent);
+    remove(this.#loadingComponent);
+    if (this.#emptyPointComponent) {
+      remove(this.#emptyPointComponent);
+    }
+
+    if(resetSortType){
+      this.#currentSortType = SortType.DAY;
+    }
+  };
+
+  #renderSort = () => {
+    if(this.#isError){
+      return;
+    }
+    this.#sortComponent = new SortsView({
+      currentSortType: this.#currentSortType,
+      onSortTypeChange: this.#handleSortTypeChange
+    });
+    render(this.#sortComponent, this.#waypointListContainer, RenderPosition.AFTERBEGIN);
+  };
+
+  #renderEmptyPoint = () => {
+    this.#emptyPointComponent = new EmptyView({filterType: this.#filterType});
+    render(this.#emptyPointComponent, this.#waypointListContainer);
+  };
+
+  #renderPoints = (points) => {
+    points.forEach((point) => this.#renderPoint(point));
+  };
+
+  #renderForm = () => {
+    if (this.#isLoading) {
+      this.#renderLoading();
+      this.#addPointButtonStatus(true);
+      return;
+    }
+
+    if(this.#isError || !this.#destinationsModel.destinations || !this.#destinationsModel.destinations.length || !this.#offersModel.offers){
+      this.#renderError();
+      remove(this.#sortComponent);
+      this.#addPointButtonStatus(true);
+      return;
+    }
+
+    this.#addPointButtonStatus(false);
+    const points = this.points;
+    const pointCount = points.length;
+
+    if (pointCount === 0) {
+      this.#renderEmptyPoint();
+    } else {
+      this.#renderTripInfo();
+    }
+    render(this.#waypointListComponent, this.#waypointListContainer);
+    this.#renderSort();
+    this.#renderPoints(points);
+  };
+
+  #renderTripInfo = () => {
+    const allPoints = [...this.#pointsModel.points].sort(sortByDay);
+    if(!allPoints.length){
+      return '';
+    }
+    this.#tripInfoComponent = new TripInfoView(allPoints, this.#destinationsModel.destinations, this.#offersModel.offers);
+    render(this.#tripInfoComponent, this.#headerContainer, RenderPosition.AFTERBEGIN);
+  };
+
+  #renderError = () => {
+    render(this.#errorComponent, this.#waypointListContainer);
+  };
+
   #handleSortTypeChange = (sortType) => {
     if (this.#currentSortType === sortType) {
       return;
@@ -186,89 +267,8 @@ export default class TripPresenter {
     }
   };
 
-  #renderLoading() {
-    render(this.#loadingComponent, this.#waypointListContainer);
-  }
-
   #handleModeChange = () => {
     this.#newPointPresenter.destroy();
     this.#pointPresenters.forEach((presenter) => presenter.resetView());
   };
-
-  #clearPointList({resetSortType = false} = {}) {
-    this.#pointPresenters.forEach((presenter) => presenter.destroy());
-    this.#pointPresenters.clear();
-    this.#newPointPresenter.destroy();
-    remove(this.#sortComponent);
-    remove(this.#tripInfoComponent);
-    remove(this.#loadingComponent);
-    if (this.#emptyPointComponent) {
-      remove(this.#emptyPointComponent);
-    }
-
-    if(resetSortType){
-      this.#currentSortType = SortType.DAY;
-    }
-  }
-
-  #renderSort = () => {
-    if(this.#isError){
-      return;
-    }
-    this.#sortComponent = new SortsView({
-      currentSortType: this.#currentSortType,
-      onSortTypeChange: this.#handleSortTypeChange
-    });
-    render(this.#sortComponent, this.#waypointListContainer, RenderPosition.AFTERBEGIN);
-  };
-
-  #renderEmptyPoint() {
-    this.#emptyPointComponent = new EmptyView({filterType: this.#filterType});
-    render(this.#emptyPointComponent, this.#waypointListContainer);
-  }
-
-  #renderPoints = (points) => {
-    points.forEach((point) => this.#renderPoint(point));
-  };
-
-  #renderForm() {
-    if (this.#isLoading) {
-      this.#renderLoading();
-      this.#addPointButtonStatus(true);
-      return;
-    }
-
-    if(this.#isError || !this.#destinationsModel.destinations || !this.#destinationsModel.destinations.length || !this.#offersModel.offers){
-      this.#renderError();
-      remove(this.#sortComponent);
-      this.#addPointButtonStatus(true);
-      return;
-    }
-
-    this.#addPointButtonStatus(false);
-    const points = this.points;
-    const pointCount = points.length;
-
-    if (pointCount === 0) {
-      this.#renderEmptyPoint();
-    } else {
-      this.#renderTripInfo();
-    }
-    render(this.#waypointListComponent, this.#waypointListContainer);
-    this.#renderSort();
-    this.#renderPoints(points);
-  }
-
-  #renderTripInfo() {
-    const allPoints = [...this.#pointsModel.points].sort(sortByDay);
-    if(!allPoints.length){
-      return '';
-    }
-    this.#tripInfoComponent = new TripInfoView(allPoints, this.#destinationsModel.destinations, this.#offersModel.offers);
-    render(this.#tripInfoComponent, this.#headerContainer, RenderPosition.AFTERBEGIN);
-  }
-
-  #renderError() {
-    render(this.#errorComponent, this.#waypointListContainer);
-  }
 }

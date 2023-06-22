@@ -10,9 +10,8 @@ const formatDate = (date, isTripInfo) => {
   return date ? dayjs(date).format(pattern) : '';
 };
 
-function createTripInfoTemplate(getTripDestinations, getTripDates, getTripPrice) {
-  return (
-    `<section class="trip-main__trip-info  trip-info">
+const createTripInfoTemplate = (getTripDestinations, getTripDates, getTripPrice) => (
+  `<section class="trip-main__trip-info  trip-info">
       <div class="trip-info__main">
         <h1 class="trip-info__title">${getTripDestinations()}</h1>
         <p class="trip-info__dates">${getTripDates()}</p>
@@ -21,8 +20,7 @@ function createTripInfoTemplate(getTripDestinations, getTripDates, getTripPrice)
         Total: &euro;&nbsp;<span class="trip-info__cost-value">${getTripPrice()}</span>
       </p>
     </section>`
-  );
-}
+);
 
 export default class TripInfoView extends AbstractStatefulView {
   #points = [];
